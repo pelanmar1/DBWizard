@@ -90,4 +90,67 @@ public interface SOAPWebService {
         @WebParam(name = "tableName", targetNamespace = "")
         String tableName);
 
+    /**
+     * 
+     * @param rowStr
+     * @param tableName
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "insertRow", targetNamespace = "http://webservices/", className = "soapws.InsertRow")
+    @ResponseWrapper(localName = "insertRowResponse", targetNamespace = "http://webservices/", className = "soapws.InsertRowResponse")
+    @Action(input = "http://webservices/SOAPWebService/insertRowRequest", output = "http://webservices/SOAPWebService/insertRowResponse")
+    public String insertRow(
+        @WebParam(name = "tableName", targetNamespace = "")
+        String tableName,
+        @WebParam(name = "rowStr", targetNamespace = "")
+        String rowStr);
+
+    /**
+     * 
+     * @param campoUpdate
+     * @param nuevoValor
+     * @param idUpdate
+     * @param tableName
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "updateRow", targetNamespace = "http://webservices/", className = "soapws.UpdateRow")
+    @ResponseWrapper(localName = "updateRowResponse", targetNamespace = "http://webservices/", className = "soapws.UpdateRowResponse")
+    @Action(input = "http://webservices/SOAPWebService/updateRowRequest", output = "http://webservices/SOAPWebService/updateRowResponse")
+    public String updateRow(
+        @WebParam(name = "tableName", targetNamespace = "")
+        String tableName,
+        @WebParam(name = "idUpdate", targetNamespace = "")
+        String idUpdate,
+        @WebParam(name = "campoUpdate", targetNamespace = "")
+        String campoUpdate,
+        @WebParam(name = "nuevoValor", targetNamespace = "")
+        String nuevoValor);
+
+    /**
+     * 
+     * @param pkName
+     * @param tableName
+     * @param rowID
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "deleteRow", targetNamespace = "http://webservices/", className = "soapws.DeleteRow")
+    @ResponseWrapper(localName = "deleteRowResponse", targetNamespace = "http://webservices/", className = "soapws.DeleteRowResponse")
+    @Action(input = "http://webservices/SOAPWebService/deleteRowRequest", output = "http://webservices/SOAPWebService/deleteRowResponse")
+    public String deleteRow(
+        @WebParam(name = "tableName", targetNamespace = "")
+        String tableName,
+        @WebParam(name = "pkName", targetNamespace = "")
+        String pkName,
+        @WebParam(name = "rowID", targetNamespace = "")
+        String rowID);
+
 }

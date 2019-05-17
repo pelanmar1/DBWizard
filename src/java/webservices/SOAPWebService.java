@@ -24,7 +24,6 @@ import javax.ejb.Stateless;
 @Stateless()
 public class SOAPWebService {
 
-
     /**
      * Web service operation
      */
@@ -61,20 +60,19 @@ public class SOAPWebService {
         try {
             DBConnection dbc = new DBConnection();
             ResultSet rs = dbc.getUserTables(username);
-            String strRS= Helpers.resultSet2Str(rs);
+            String strRS = Helpers.resultSet2Str(rs);
             dbc.closeConnection();
             return strRS;
-            
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SOAPWebService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(SOAPWebService.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
         //TODO write your implementation code here:
         return "";
     }
-
 
     /**
      * Web service operation
@@ -94,16 +92,76 @@ public class SOAPWebService {
         try {
             DBConnection dbc = new DBConnection();
             ResultSet rs = dbc.getTable(tableName);
-            String strRS= Helpers.resultSet2Str(rs);
+            String strRS = Helpers.resultSet2Str(rs);
             dbc.closeConnection();
             return strRS;
-            
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SOAPWebService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(SOAPWebService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "";
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "deleteRow")
+    public String deleteRow(@WebParam(name = "tableName") String tableName, @WebParam(name = "pkName") String pkName, @WebParam(name = "rowID") String rowID) {
+        try {
+            DBConnection dbc = new DBConnection();
+            dbc.deleteRow(tableName, pkName, rowID);
+            dbc.closeConnection();
+            return "";
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SOAPWebService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(SOAPWebService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "Error";
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "insertRow")
+    public String insertRow(@WebParam(name = "tableName") String tableName, @WebParam(name = "rowStr") String rowStr) {
+        try {
+
+            DBConnection dbc = new DBConnection();
+            dbc.insertRow(tableName, rowStr);
+            dbc.closeConnection();
+            return "";
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SOAPWebService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(SOAPWebService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "Error";
+
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "updateRow")
+    public String updateRow(@WebParam(name = "tableName") String tableName, @WebParam(name = "idUpdate") String idUpdate, @WebParam(name = "campoUpdate") String campoUpdate, @WebParam(name = "nuevoValor") String nuevoValor) {
+        try {
+
+            DBConnection dbc = new DBConnection();
+            dbc.updateRow(tableName, idUpdate,campoUpdate,nuevoValor);
+            dbc.closeConnection();
+            return "";
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SOAPWebService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(SOAPWebService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "Error";
     }
 
 }

@@ -28,6 +28,24 @@
 <message name="getFromTableResponse">
 <part name="parameters" element="tns:getFromTableResponse"/>
 </message>
+<message name="insertRow">
+<part name="parameters" element="tns:insertRow"/>
+</message>
+<message name="insertRowResponse">
+<part name="parameters" element="tns:insertRowResponse"/>
+</message>
+<message name="updateRow">
+<part name="parameters" element="tns:updateRow"/>
+</message>
+<message name="updateRowResponse">
+<part name="parameters" element="tns:updateRowResponse"/>
+</message>
+<message name="deleteRow">
+<part name="parameters" element="tns:deleteRow"/>
+</message>
+<message name="deleteRowResponse">
+<part name="parameters" element="tns:deleteRowResponse"/>
+</message>
 <portType name="SOAPWebService">
 <operation name="createTable">
 <input wsam:Action="http://webservices/SOAPWebService/createTableRequest" message="tns:createTable"/>
@@ -44,6 +62,18 @@
 <operation name="getFromTable">
 <input wsam:Action="http://webservices/SOAPWebService/getFromTableRequest" message="tns:getFromTable"/>
 <output wsam:Action="http://webservices/SOAPWebService/getFromTableResponse" message="tns:getFromTableResponse"/>
+</operation>
+<operation name="insertRow">
+<input wsam:Action="http://webservices/SOAPWebService/insertRowRequest" message="tns:insertRow"/>
+<output wsam:Action="http://webservices/SOAPWebService/insertRowResponse" message="tns:insertRowResponse"/>
+</operation>
+<operation name="updateRow">
+<input wsam:Action="http://webservices/SOAPWebService/updateRowRequest" message="tns:updateRow"/>
+<output wsam:Action="http://webservices/SOAPWebService/updateRowResponse" message="tns:updateRowResponse"/>
+</operation>
+<operation name="deleteRow">
+<input wsam:Action="http://webservices/SOAPWebService/deleteRowRequest" message="tns:deleteRow"/>
+<output wsam:Action="http://webservices/SOAPWebService/deleteRowResponse" message="tns:deleteRowResponse"/>
 </operation>
 </portType>
 <binding name="SOAPWebServicePortBinding" type="tns:SOAPWebService">
@@ -76,6 +106,33 @@
 </output>
 </operation>
 <operation name="getFromTable">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="insertRow">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="updateRow">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="deleteRow">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

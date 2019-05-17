@@ -35,7 +35,9 @@
 
             var QueryString = "create table " + nombreTabla + "(";
 
-            var stringKey;
+            var stringKey = null;
+            var keyLength;
+            var keyType;
 
             for (var i = 1; i < numFields + 1; i++) {
                 var stringName = "fieldName" + i;
@@ -46,7 +48,35 @@
                 var elementName = document.getElementById(stringName).value;
                 var elementType = document.getElementById(stringType).value;
 
-                if (elementType == 'varchar') {
+                if (document.getElementById(stringRadio).checked) {
+                    stringKey = elementName;
+                    keyType = elementType;
+                    if (elementType === 'varchar') {
+                        keyLength = document.getElementById(stringLength).value;
+                        QueryString = QueryString + stringKey + " " + keyType + "(" + keyLength + "),";
+
+                    } else {
+                        QueryString = QueryString + stringKey + " " + keyType + ",";
+                    }
+                }
+
+
+
+            }
+
+            for (var i = 1; i < numFields + 1; i++) {
+                var stringName = "fieldName" + i;
+                var stringType = "ddl" + i;
+                var stringLength = "length" + i;
+                var stringRadio = "radio" + i;
+
+                var elementName = document.getElementById(stringName).value;
+                var elementType = document.getElementById(stringType).value;
+                if (elementName === stringKey) {
+                    continue;
+                }
+
+                if (elementType === 'varchar') {
                     var elementLength = document.getElementById(stringLength).value;
 
                     QueryString = QueryString + elementName + " " + elementType + "(" + elementLength + "),";
@@ -84,55 +114,7 @@
 
         }
 
-        function createInsertQuery(user, method, target) {
-            var username = document.getElementById(user).value;
-            var nombreTabla = document.getElementById("tblName").value;
-            var numFields = document.getElementById("numFields").value;
-            var numFieldsInt = parseInt(numFields);
-            var QueryString = "insert into ROOT." + nombreTabla + " values (";
 
-            for (var i = 0; i < numFieldsInt; i++) {
-                var stringName = "fieldName" + i;
-                var stringType = "ddl" + i;
-
-                var elementName = document.getElementById(stringName).value;
-                var elementType = document.getElementById(stringType).value;
-
-                if (elementType == 'varchar') {
-                    QueryString = QueryString + "'" + elementName + "'";
-                } else {
-                    QueryString = QueryString + elementName;
-                }
-
-                if ((numFieldsInt - i) != 1) {
-                    QueryString = QueryString + ",";
-                }
-            }
-
-            QueryString = QueryString + ")";
-
-            var FinalQueryString = QueryString;
-
-            var ajaxRequest;
-            if (window.XMLHttpRequest) {
-                ajaxRequest = new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
-            } else {
-                ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP"); // IE6, IE5
-            }
-            ajaxRequest.onreadystatechange = function () {
-                if (ajaxRequest.readyState == 4 &&
-                        (ajaxRequest.status == 200 || ajaxRequest.status == 204)) {
-                    alert("Insert Exitoso");
-                }
-            }
-
-            var targets = target + "?" + "queryParam=" + FinalQueryString + "&username=" + username;
-
-            ajaxRequest.open(method, targets, true /*async*/);
-            ajaxRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            ajaxRequest.send();
-
-        }
 
         function formatTable(strTable) {
             if (strTable === "") {
@@ -174,27 +156,106 @@
             return html;
         }
 
+        function deleteRowAJAX(tableName, pkName, rowID) {
+            var target = "http://localhost:8080/POmega/webresources/OneTable";
+            var url = target + "?tableName=" + tableName + "&pkName=" + pkName + "&rowID=" + rowID;
+
+            var ajaxRequest;
+            if (window.XMLHttpRequest) {
+                ajaxRequest = new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
+            } else {
+                ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP"); // IE6, IE5
+            }
+            ajaxRequest.onreadystatechange = function () {
+                if (ajaxRequest.readyState == 4 &&
+                        (ajaxRequest.status == 200 || ajaxRequest.status == 204)) {
+                    alert("Delete exitoso");
+                }
+            }
+            console.log(url);
+            ajaxRequest.open("delete", url, true /*async*/);
+            ajaxRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            ajaxRequest.send();
+        }
+        function addRowAJAX() {
+            var row = document.getElementById("rowAgregar");
+            var rowStr = "";
+            var tableName = document.getElementById("nomTablaMuestraN").value;
+            for (var i = 0; i < row.cells.length - 1; i++)
+            {
+                var val = row.cells[i].firstChild.value;
+                console.log(val);
+                rowStr += "" + val + ",";
+            }
+            rowStr = rowStr.substr(0, rowStr.length - 1);
+
+            var target = "http://localhost:8080/POmega/webresources/OneTable";
+            var url = target + "?tableName=" + tableName + "&rowStr=" + rowStr;
+
+            var ajaxRequest;
+            if (window.XMLHttpRequest) {
+                ajaxRequest = new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
+            } else {
+                ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP"); // IE6, IE5
+            }
+            ajaxRequest.onreadystatechange = function () {
+                if (ajaxRequest.readyState == 4 &&
+                        (ajaxRequest.status == 200 || ajaxRequest.status == 204)) {
+                    alert("Insert exitoso");
+                }
+            }
+            console.log(url);
+            ajaxRequest.open("post", url, true /*async*/);
+            ajaxRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            ajaxRequest.send();
+        }
         function formatHTMLTableNRows(strTable, n) {
+            var tableName = document.getElementById("nomTablaMuestraN").value;
+            if (n === "") {
+                n = 10000;
+            } else {
+                n = parseInt(n);
+            }
             if (strTable === "") {
-                return "Tabla no encontrada.";
+                return "Tabla no encontrada o sin datos.";
             }
             var rows = strTable.split(";");
-            console.log(rows);
             var cols;
+            var pkName;
+            var rowID;
             var html = "<table border=\"1\"><tbody>";
-            for (var i = 0; i < rows.length; i++) {
-                if (i===n+1)
+            for (var i = 0; i < rows.length - 1; i++) {
+                if (i === n + 1)
                     break;
                 cols = rows[i].split(",");
-                console.log(cols);
                 html += "<tr>";
-                for (var j = 0; j < cols.length - 1; j++) {
-                    html += "<td>" + cols[j] + "</td>";
+                for (var j = 0; j < cols.length; j++) {
+                    if (i === 0) {
+                        html += "<th>" + cols[j] + "</th>";
+                        pkName = cols[0];
+                    } else {
+                        rowID = cols[0];
+                        html += "<td>" + cols[j] + "</td>";
+                    }
+                }
+                // Delete Edit
+                if (i === 0) {
+                    html += "<th>ELIMINAR</th>";
+                } else {
+                    html += "<td><button onclick=\"deleteRowAJAX('" + tableName + "','" + pkName + "','" + rowID + "')\">Eliminar</Button></td>";
                 }
                 html += "</tr>";
+
             }
+
+            html += "<tr id='rowAgregar'>";
+            for (var j = 0; j < cols.length; j++) {
+                html += "<td><input type='text'/></td>";
+            }
+            html += "<td><button onclick=\"addRowAJAX()\">Agregar</Button></td>";
+            html += "</tr>";
+
             html += "</tbody></table>";
-            console.log(html);
             return html;
         }
 
@@ -224,63 +285,7 @@
             ajaxRequest.send("username=" + username);
         }
 
-        function updateRow(user, method, target) {
-            var username = document.getElementById(user).value;
 
-            var ajaxRequest;
-            if (window.XMLHttpRequest) {
-                ajaxRequest = new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
-            } else {
-                ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP"); // IE6, IE5
-            }
-            ajaxRequest.onreadystatechange = function () {
-                if (ajaxRequest.readyState == 4 &&
-                        (ajaxRequest.status == 200 || ajaxRequest.status == 204)) {
-                    alert("¡Update Exitoso!");
-                }
-            }
-
-            var table = document.getElementById("tblNameEdit").value;
-            var column = document.getElementById("updateColumn").value;
-            var valor = document.getElementById("updateValor").value;
-            var id = document.getElementById("deleteID").value;
-
-            var queryParam = "UPDATE ROOT." + table + " SET " + column + " = " + valor + " WHERE ID=" + id;
-            var targets = target + "?" + "queryParam=" + queryParam + "&username=" + username;
-
-            alert(targets);
-            alert(queryParam);
-
-            ajaxRequest.open(method, targets, true);
-            ajaxRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            ajaxRequest.send();
-        }
-
-        function deleteRow(user, method, target) {
-            var username = document.getElementById(user).value;
-
-            var ajaxRequest;
-            if (window.XMLHttpRequest) {
-                ajaxRequest = new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
-            } else {
-                ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP"); // IE6, IE5
-            }
-            ajaxRequest.onreadystatechange = function () {
-                if (ajaxRequest.readyState == 4 &&
-                        (ajaxRequest.status == 200 || ajaxRequest.status == 204)) {
-                    alert("¡Delete Exitoso!");
-                }
-            }
-
-            var id = document.getElementById("deleteID").value;
-            var table = document.getElementById("tblNameEdit").value;
-
-            var targets = target + "?" + "username=" + username + "&id=" + id + "&table=" + table;
-
-            ajaxRequest.open(method, targets, true);
-            ajaxRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            ajaxRequest.send();
-        }
         function disableLongitud(id, value) {
             var num = id.replace(/\D/g, "");
             var lonId = "length" + num;
@@ -339,6 +344,8 @@
             var tableName = document.getElementById("nomTablaMuestraN").value;
             var idTarget = "tablaNRegistros";
             var nRows = document.getElementById("numRegistros").value;
+            if (nRows === "")
+                nRows = 1000;
             var ajaxRequest;
             if (window.XMLHttpRequest) {
                 ajaxRequest = new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
@@ -348,7 +355,8 @@
             ajaxRequest.onreadystatechange = function () {
                 if (ajaxRequest.readyState == 4 && ajaxRequest.status == 200) {
                     var data = ajaxRequest.responseText;
-                    data = formatHTMLTableNRows(data,nRows);
+                    console.log(data);
+                    data = formatHTMLTableNRows(data, nRows);
                     document.getElementById(idTarget).innerHTML = data;
                 }
             }
@@ -360,11 +368,40 @@
             ajaxRequest.send("username=" + username);
 
         }
+        function editarCampo() {
+            var method = "PUT";
+            var target = 'http://localhost:8080/POmega/webresources/OneTable';
+            var tableName = document.getElementById("nomTablaMuestraN").value;
+            var idUpdate = document.getElementById("idUpdate").value;
+            var campoUpdate = document.getElementById("campoUpdate").value;
+            var nuevoValor = document.getElementById("nuevoValor").value;
 
+            var ajaxRequest;
+            if (window.XMLHttpRequest) {
+                ajaxRequest = new XMLHttpRequest(); // IE7+, Firefox, Chrome, Opera, Safari
+            } else {
+                ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP"); // IE6, IE5
+            }
+            ajaxRequest.onreadystatechange = function () {
+                if (ajaxRequest.readyState == 4 && ajaxRequest.status == 200) {
+                    var data = ajaxRequest.responseText;
+                    console.log(data);
+                    alert("Update exitoso.");
+                }
+            }
+            var target = target + "?tableName=" + tableName + "&idUpdate=" + idUpdate + "&campoUpdate=" + campoUpdate + "&nuevoValor=" + nuevoValor;
+            console.log(target);
+
+            ajaxRequest.open(method, target, true); //Utilizando POST
+            ajaxRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            ajaxRequest.send("username=" + username);
+
+        }
 
 
     </script>
     <body onload="updateTableList()">
+    <center>
         <h1 style="margin-left: auto; margin-right: auto;">Proyecto Omega</h1>
         <a href="Logout">Cerrar Sesión</a>
         <br />
@@ -376,7 +413,8 @@
         <br/>
 
         <h2>Crear tabla</h2>
-        Nombre de la tabla: <input type="text" id='tblName' />
+        Nombre de la nueva tabla: <input type="text" id='tblName' />
+        <br />
         <br />
         <input id='username' type="hidden" name="Fields" value=<%=mySession.getAttribute("username")%> />
 
@@ -387,35 +425,30 @@
 
             </tbody>
         </table>
+        <br />
+
         <button onclick="agregarCampo()">Agregar campo</button>
         <button id="btnBorrarCampo" onclick="borrarCampo()" disabled=true>Borrar campo</button>
 
-        <br>
-        <div id="respuesta"></div>
         <input type="submit" value="Crear tabla" onclick="callRESTCreateTable()" />
         <br/>
         <br>
 
-        <h2>Edit/Delete Row</h2>
-        Table name: <input type="text" id='tblNameEdit' />
-        Row ID: <input id="deleteID" type="text" name="deleteID" value="" />
-        <input type="submit" value="Delete" onclick="deleteRow('username', 'DELETE',
-                        'http://localhost:8080/POmega/webresources/MyPath')" />
-        <br/>
-        Edit field: <input id="updateColumn" type="text" name="updateColumn" value="" />
-        To new value: <input id="updateValor" type="text" name="updateValor" value="" />
-        <br>
-        ** Add ' ' to the new value in case of varchar.**
-        <br>
-        <input type="submit" value="Update" onclick="updateRow('username', 'POST',
-                        'http://localhost:8080/POmega/webresources/SecondRest')" />
-        <br> 
-
         <h2>REGISTROS</h2>
-        Nombre de la tabla: <input id="nomTablaMuestraN" type="text" value="" />
+        Nombre de la tabla: <input id="nomTablaMuestraN" type="text" value="" /><br>
+        <h4>Ver/Añadir registros</h4>
         Número de registros por mostrar (N): <input id="numRegistros" type="text" name="numRegistros" value="" />
-        <br>
-        <input type="submit" value="Primeros N" onclick="cargarNRegistros()"/>
+        <input type="submit" value="Cargar datos" onclick="cargarNRegistros()"/>
         <div id="tablaNRegistros"></div>
+
+
+
+        <h4>Editar campo</h4>
+        ID: <input id="idUpdate" type="text"  value="" />
+        Campo a cambiar: <input id="campoUpdate" type="text"  value="" />
+        Nuevo valor: <input id="nuevoValor" type="text"  value="" />
+        <input type="submit" value="Actualizar" onclick="editarCampo()" />
+        <br> 
+</center>
     </body>
 </html>

@@ -9,7 +9,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
@@ -34,6 +36,7 @@ public class OneTableResource {
 
     /**
      * Retrieves representation of an instance of webservices.OneTableResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
@@ -42,45 +45,58 @@ public class OneTableResource {
         //TODO return proper representation object
         String tables = getTableSOAP(tableName);
         return tables;
-        
+
+    }
+
+    @POST
+    public void postHtml(@QueryParam("tableName") String tableName, @QueryParam("rowStr") String rowStr) {
+        System.out.println("Q " + tableName + "" + rowStr);
+        insertRowSOAP(tableName, rowStr);
     }
 
     /**
      * PUT method for updating or creating an instance of OneTableResource
+     *
      * @param content representation for the resource
      */
     @PUT
-    @Consumes(MediaType.TEXT_HTML)
-    public void putHtml(String content) {
+    public void putHtml(@QueryParam("tableName") String tableName, @QueryParam("idUpdate") String idUpdate, @QueryParam("campoUpdate") String campoUpdate, @QueryParam("nuevoValor") String nuevoValor) {
+        updateRowSOAP(tableName,idUpdate,campoUpdate,nuevoValor);
     }
-    
+
+    @DELETE
+//    @Consumes(MediaType.TEXT_HTML)
+    public void deleteHtml(@QueryParam("tableName") String tableName, @QueryParam("pkName") String pkName, @QueryParam("rowID") String rowID) {
+        deleteRowSOAP(tableName, pkName, rowID);
+
+    }
+
     private static String getTableSOAP(java.lang.String tableName) {
-        System.out.println("tableName: "+tableName);
         soapws.SOAPWebService_Service service = new soapws.SOAPWebService_Service();
         soapws.SOAPWebService port = service.getSOAPWebServicePort();
         String tables = port.getFromTable(tableName);
         return tables;
 
     }
-    
-    private static void updateInTableSOAP(java.lang.String username, java.lang.String tableName,java.lang.String rowID, java.lang.String colName, java.lang.String newValue ) {
+
+    private static void updateRowSOAP(java.lang.String tableName, java.lang.String idUpdate, java.lang.String campoUpdate, java.lang.String nuevoValor) {
         soapws.SOAPWebService_Service service = new soapws.SOAPWebService_Service();
         soapws.SOAPWebService port = service.getSOAPWebServicePort();
-        port.deleteTable(username, tableName);
+        port.updateRow(tableName, idUpdate, campoUpdate, nuevoValor);
 
     }
-    
-    private static void insertInTableSOAP(java.lang.String username, java.lang.String tableName) {
+
+    private static void insertRowSOAP(java.lang.String tableName, java.lang.String rowStr) {
         soapws.SOAPWebService_Service service = new soapws.SOAPWebService_Service();
         soapws.SOAPWebService port = service.getSOAPWebServicePort();
-        port.deleteTable(username, tableName);
+        port.insertRow(tableName, rowStr);
 
     }
-    
-    private static void deleteInTableSOAP(java.lang.String username, java.lang.String tableName, java.lang.String rowID) {
+
+    private static void deleteRowSOAP(java.lang.String tableName, java.lang.String pkName, java.lang.String rowID) {
         soapws.SOAPWebService_Service service = new soapws.SOAPWebService_Service();
         soapws.SOAPWebService port = service.getSOAPWebServicePort();
-        port.deleteTable(username, tableName);
+        port.deleteRow(tableName, pkName, rowID);
 
     }
 }

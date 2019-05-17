@@ -26,12 +26,18 @@ public class ObjectFactory {
 
     private final static QName _CreateTable_QNAME = new QName("http://webservices/", "createTable");
     private final static QName _CreateTableResponse_QNAME = new QName("http://webservices/", "createTableResponse");
+    private final static QName _DeleteRow_QNAME = new QName("http://webservices/", "deleteRow");
+    private final static QName _DeleteRowResponse_QNAME = new QName("http://webservices/", "deleteRowResponse");
     private final static QName _DeleteTable_QNAME = new QName("http://webservices/", "deleteTable");
     private final static QName _DeleteTableResponse_QNAME = new QName("http://webservices/", "deleteTableResponse");
     private final static QName _GetFromTable_QNAME = new QName("http://webservices/", "getFromTable");
     private final static QName _GetFromTableResponse_QNAME = new QName("http://webservices/", "getFromTableResponse");
+    private final static QName _InsertRow_QNAME = new QName("http://webservices/", "insertRow");
+    private final static QName _InsertRowResponse_QNAME = new QName("http://webservices/", "insertRowResponse");
     private final static QName _ShowTables_QNAME = new QName("http://webservices/", "showTables");
     private final static QName _ShowTablesResponse_QNAME = new QName("http://webservices/", "showTablesResponse");
+    private final static QName _UpdateRow_QNAME = new QName("http://webservices/", "updateRow");
+    private final static QName _UpdateRowResponse_QNAME = new QName("http://webservices/", "updateRowResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: soapws
@@ -54,6 +60,22 @@ public class ObjectFactory {
      */
     public CreateTableResponse createCreateTableResponse() {
         return new CreateTableResponse();
+    }
+
+    /**
+     * Create an instance of {@link DeleteRow }
+     * 
+     */
+    public DeleteRow createDeleteRow() {
+        return new DeleteRow();
+    }
+
+    /**
+     * Create an instance of {@link DeleteRowResponse }
+     * 
+     */
+    public DeleteRowResponse createDeleteRowResponse() {
+        return new DeleteRowResponse();
     }
 
     /**
@@ -89,6 +111,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link InsertRow }
+     * 
+     */
+    public InsertRow createInsertRow() {
+        return new InsertRow();
+    }
+
+    /**
+     * Create an instance of {@link InsertRowResponse }
+     * 
+     */
+    public InsertRowResponse createInsertRowResponse() {
+        return new InsertRowResponse();
+    }
+
+    /**
      * Create an instance of {@link ShowTables }
      * 
      */
@@ -102,6 +140,22 @@ public class ObjectFactory {
      */
     public ShowTablesResponse createShowTablesResponse() {
         return new ShowTablesResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdateRow }
+     * 
+     */
+    public UpdateRow createUpdateRow() {
+        return new UpdateRow();
+    }
+
+    /**
+     * Create an instance of {@link UpdateRowResponse }
+     * 
+     */
+    public UpdateRowResponse createUpdateRowResponse() {
+        return new UpdateRowResponse();
     }
 
     /**
@@ -120,6 +174,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservices/", name = "createTableResponse")
     public JAXBElement<CreateTableResponse> createCreateTableResponse(CreateTableResponse value) {
         return new JAXBElement<CreateTableResponse>(_CreateTableResponse_QNAME, CreateTableResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteRow }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservices/", name = "deleteRow")
+    public JAXBElement<DeleteRow> createDeleteRow(DeleteRow value) {
+        return new JAXBElement<DeleteRow>(_DeleteRow_QNAME, DeleteRow.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteRowResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservices/", name = "deleteRowResponse")
+    public JAXBElement<DeleteRowResponse> createDeleteRowResponse(DeleteRowResponse value) {
+        return new JAXBElement<DeleteRowResponse>(_DeleteRowResponse_QNAME, DeleteRowResponse.class, null, value);
     }
 
     /**
@@ -159,6 +231,24 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertRow }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservices/", name = "insertRow")
+    public JAXBElement<InsertRow> createInsertRow(InsertRow value) {
+        return new JAXBElement<InsertRow>(_InsertRow_QNAME, InsertRow.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertRowResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservices/", name = "insertRowResponse")
+    public JAXBElement<InsertRowResponse> createInsertRowResponse(InsertRowResponse value) {
+        return new JAXBElement<InsertRowResponse>(_InsertRowResponse_QNAME, InsertRowResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ShowTables }{@code >}}
      * 
      */
@@ -174,6 +264,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservices/", name = "showTablesResponse")
     public JAXBElement<ShowTablesResponse> createShowTablesResponse(ShowTablesResponse value) {
         return new JAXBElement<ShowTablesResponse>(_ShowTablesResponse_QNAME, ShowTablesResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateRow }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservices/", name = "updateRow")
+    public JAXBElement<UpdateRow> createUpdateRow(UpdateRow value) {
+        return new JAXBElement<UpdateRow>(_UpdateRow_QNAME, UpdateRow.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateRowResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservices/", name = "updateRowResponse")
+    public JAXBElement<UpdateRowResponse> createUpdateRowResponse(UpdateRowResponse value) {
+        return new JAXBElement<UpdateRowResponse>(_UpdateRowResponse_QNAME, UpdateRowResponse.class, null, value);
     }
 
 }
