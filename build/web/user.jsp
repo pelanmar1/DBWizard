@@ -398,57 +398,96 @@
 
         }
 
+       function ddlTablas(){
+           
+       }
 
     </script>
+    <style>
+        .container {
+            width: 65%;
+            height: 200px;
+            margin: auto;
+        }
+        .one {
+            width: 50%;
+            height: 200px;
+            float: left;
+        }
+        .two {
+            height:800px;
+        }
+        .three{
+            width: 60%;
+            margin-top: 160px;
+        }
+    </style>
     <body onload="updateTableList()">
     <center>
         <h1 style="margin-left: auto; margin-right: auto;">Proyecto Omega</h1>
-        <a href="Logout">Cerrar Sesión</a>
+        <hr>
         <br />
-        <h2>Bienvenido <%=mySession.getAttribute("username")%>!<br></h2>
+        <h2>Bienvenido <%=mySession.getAttribute("username")%> <h4><a href="Logout">Cerrar Sesión</a></h4></h2>
+        <div class="container">
+            <hr>
+            <div class="one">
+                <h2>Mis tablas</h2>
 
-        <input type="submit" value="Ver tablas" onclick = "updateTableList()"/>
+                <input type="submit" value="Mostrar tablas" onclick = "updateTableList()"/>
+                <br>
+                <br>
 
-        <div id='userTables'></div>         
-        <br/>
+                <div id='userTables'></div>         
+                <br/>
+            </div>
+            <div class="two">
+                <h2>Crear tabla</h2>
 
-        <h2>Crear tabla</h2>
-        Nombre de la nueva tabla: <input type="text" id='tblName' />
-        <br />
-        <br />
-        <input id='username' type="hidden" name="Fields" value=<%=mySession.getAttribute("username")%> />
+                Nombre de la nueva tabla: <input type="text" id='tblName' />
+                
+                <br />
+                <br />
+                <input id='username' type="hidden" name="Fields" value=<%=mySession.getAttribute("username")%> />
 
-        <table border="1" id="tablaNueva">
-            <tr><th>Nombre del campo</th><th>Tipo del campo</th><th>Llave primaria</th><th>Longitud</th>
-            </tr>
-            <tbody>
+                <table border="1" id="tablaNueva">
+                    <tr><th>Nombre del campo</th><th>Tipo del campo</th><th>Llave primaria</th><th>Longitud</th>
+                    </tr>
+                    <tbody>
 
-            </tbody>
-        </table>
-        <br />
+                    </tbody>
+                </table>
+                <br />
 
-        <button onclick="agregarCampo()">Agregar campo</button>
-        <button id="btnBorrarCampo" onclick="borrarCampo()" disabled=true>Borrar campo</button>
+                <button onclick="agregarCampo()">Agregar campo</button>
+                <button id="btnBorrarCampo" onclick="borrarCampo()" disabled=true>Quitar campo</button>
 
-        <input type="submit" value="Crear tabla" onclick="callRESTCreateTable()" />
-        <br/>
-        <br>
+                <input type="submit" value="Crear tabla" onclick="callRESTCreateTable()" />
+                <br/>
+                <br>
+            </div>
+        </div>
+        <div class="three">
+            <hr>
 
-        <h2>REGISTROS</h2>
-        Nombre de la tabla: <input id="nomTablaMuestraN" type="text" value="" /><br>
-        <h4>Ver/Añadir registros</h4>
-        Número de registros por mostrar (N): <input id="numRegistros" type="text" name="numRegistros" value="" />
-        <input type="submit" value="Cargar datos" onclick="cargarNRegistros()"/>
-        <div id="tablaNRegistros"></div>
+            <h2>Registros</h2>
+
+            Nombre de la tabla: <input id="nomTablaMuestraN" type="text" value="" /><br>
+            <h4>Ver/Añadir registros</h4>
+            Mostrar primeros N: <input id="numRegistros" type="text" name="numRegistros" value="" />
+            <input type="submit" value="Cargar datos" onclick="cargarNRegistros()"/>
+            <div id="tablaNRegistros"></div>
 
 
 
-        <h4>Editar campo</h4>
-        ID: <input id="idUpdate" type="text"  value="" />
-        Campo a cambiar: <input id="campoUpdate" type="text"  value="" />
-        Nuevo valor: <input id="nuevoValor" type="text"  value="" />
-        <input type="submit" value="Actualizar" onclick="editarCampo()" />
-        <br> 
-</center>
-    </body>
+            <h4>Editar campo</h4>
+            ID: <input id="idUpdate" type="text"  value="" />
+            Campo a cambiar: <input id="campoUpdate" type="text"  value="" />
+            Nuevo valor: <input id="nuevoValor" type="text"  value="" />
+            <input type="submit" value="Actualizar" onclick="editarCampo()" />
+            <br> 
+            <hr>
+
+        </div>
+    </center>
+</body>
 </html>

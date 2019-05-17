@@ -9,38 +9,47 @@
     </head>
     <body>        
     <center>
-        <h1 style="margin-left: auto; margin-right: auto;">Proyecto Omega - Manejador de bases de datos</h1>
-        <h2>Isaac, Pedro y Daniel</h2>
+        <h1 style="margin-left: auto; margin-right: auto;">DataWeb Wizard</h1>
+        <h3>Isaac, Pedro y Daniel</h3>
+
         <div style="width: 50%;">
+            <hr>
             <form method="GET" action="Login">
-                <h3>Iniciar sesión</h3>
+                <h2>Iniciar sesión</h2>
                 <br/>
                 Usuario:  <input type="text" name="username" />
                 <br/>
+                <br/>
                 Contraseña:  <input type="password" name="password" />            
                 <br/>
-                <br>
+                <br/>
                 <input type="submit" value="Iniciar sesión" />
             </form>
+            <hr>
             <form method="GET" action="Register">
-                <h3>Registro de cuenta</h3>
+                <h2>Registro de cuenta</h2>
                 <br/>
                 Usuario: <input type="text" name="username" />
                 <br/>
+                <br/>
                 Contraseña: <input type="password" name="password" />            
                 <br/>
+
                 <br>
                 <input type="submit" value="Registrarme" />
             </form>
-        </div>       
+
+        </div>  
+        <br>
+        <a id="msg" style="color: blue;font-style: italic">
+            <%
+                String s = request.getParameter("err");
+                if (s != null) {
+                    out.println(s);
+                }
+            %>
+        </a>
     </center>
-    <a id="msg" style="color: #FF0000;">
-        <%
-            String s = request.getParameter("err");
-            if (s != null) {
-                out.println(s);
-            }
-        %>
-    </a>
+
 </body> 
 </html>
